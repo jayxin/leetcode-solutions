@@ -1,0 +1,5 @@
+ABCB
+3 4
+ABCE
+SFCS
+ADEE

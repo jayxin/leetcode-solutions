@@ -1,0 +1,10 @@
+cad
+8
+cc
+acd
+b
+ba
+bac
+bad
+ac
+d

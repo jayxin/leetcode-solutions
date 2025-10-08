@@ -1,0 +1,7 @@
+6
+abcw
+baz
+foo
+bar
+xtfn
+abcdef

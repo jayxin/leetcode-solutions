@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // 2264. 字符串中最大的 3 位相同数字 - 给你一个字符串 num ，表示一个大整数。如果一个整数满足下述所有条件，则认为该整数是一个 优质整数 ：
 //  * 该整数是 num 的一个长度为 3 的 子字符串 。
@@ -30,7 +31,35 @@
 
 // #v1
 char* largestGoodInteger(char* num) {
-    return 0;
+  char t[10] = {0}, prev, *ret;
+  int c = 1;
+
+  prev = *num++;
+  while (*num) {
+    if (*num == prev) {
+      ++c;
+      if (c == 3) {
+        c = 0;
+        t[*num - '0'] = 1;
+      }
+    } else {
+      prev = *num;
+      c = 1;
+    }
+
+    ++num;
+  }
+
+  for (int i = 9; i >= 0; i--) {
+    if (t[i]) {
+      ret = (char *)malloc(sizeof(char) * 4);
+      ret[0] = ret[1] = ret[2] = '0' + i;
+      ret[3] = '\0';
+      return ret;
+    }
+  }
+
+  return "";
 }
 // #v1
 

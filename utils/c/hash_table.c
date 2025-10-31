@@ -4,35 +4,29 @@ struct HashNode {
 };
 
 struct HashTable {
-  int capacity;
-  int size;
-  struct HashNode **table;
+  int c;
+  struct HashNode **a;
 };
 
 struct HashNode* NewHashNode(int val) {
-  struct HashNode *ret = (struct HashNode *)malloc(sizeof(struct HashNode));
+  struct HashNode *ret = calloc(1, sizeof(struct HashNode));
+
   ret->val = val;
-  ret->next = NULL;
+
   return ret;
 }
 
-struct HashTable* NewHashTable(int capacity) {
-  if (capacity <= 0) {
-    return NULL;
-  }
+struct HashTable* NewHashTable(int c) {
+  struct HashTable *ret = calloc(1, sizeof(struct HashTable));
 
-  struct HashTable *ret = (struct HashTable *)malloc(sizeof(struct HashTable));
-  ret->capacity = capacity;
-  ret->size = 0;
-  int table_bytes = sizeof(struct HashNode *) * capacity;
-  ret->table = (struct HashNode **)malloc(table_bytes);
-  memset(ret->table, 0, table_bytes);
+  ret->c = c;
+  ret->a = calloc(c, sizeof(struct HashNode *));
+  for (int i = 0; i < c; i++) ret->a[i] = NULL;
 
   return ret;
 }
 
 int HashFunc(struct HashTable *t, int key) {
-  if (!t) return 0;
   int ret = key % t->capacity;
   if (ret < 0) {
     ret += t->capacity;
@@ -41,12 +35,8 @@ int HashFunc(struct HashTable *t, int key) {
 }
 
 struct HashNode* HashTableFind(struct HashTable *t, int val) {
-  if (!t) return NULL;
   int h = HashFunc(t, val);
-  if ((t->table)[h] == NULL) {
-    return NULL;
-  }
-  struct HashNode *p = (t->table)[h];
+  struct HashNode *p = t->a[h];
   while (p) {
     if (p->val == val) {
       return p;
@@ -57,29 +47,24 @@ struct HashNode* HashTableFind(struct HashTable *t, int val) {
 }
 
 void HashTableAdd(struct HashTable *t, int val) {
-  if (!t) return ;
   int h = HashFunc(t, val);
-  struct HashNode *n, *p = (t->table)[h];
+  struct HashNode *n, *p = t->a[h];
+
   n = NewHashNode(val);
-  if (p == NULL) {
-    (t->table)[h] = n;
-  } else {
-    n->next = p;
-    (t->table)[h] = n;
-  }
+  t->a[h] = n;
+  n->next = p;
 }
 
 void HashTablePrint(struct HashTable *t) {
-  if (!t) return ;
   struct HashNode *p;
-  int i;
-  for (i = 0; i < t->capacity; i++) {
-    if (t->table[i] == NULL) {
+
+  for (int i = 0; i < t->c; i++) {
+    if (t->a[i] == NULL) {
       continue;
     }
-    p = t->table[i];
+    p = t->a[i];
     while (p) {
-      printf("%d ", t->table[i]->val);
+      printf("%d ", t->a[i]->val);
       p = p->next;
     }
     putchar('\n');
@@ -87,10 +72,9 @@ void HashTablePrint(struct HashTable *t) {
 }
 
 void HashTableRemove(struct HashTable *t, int val) {
-  if (!t) return ;
   int h = HashFunc(t, val);
-  struct HashNode *p = (t->table)[h];
-  if (p == NULL) {
+  struct HashNode *p = t->a[h];
+  if (!p) {
     return ;
   } else {
     struct HashNode *prev = NULL;
@@ -105,7 +89,7 @@ void HashTableRemove(struct HashTable *t, int val) {
       if (prev) {
         prev->next = p->next;
       } else {
-        (t->table)[h] = (t->table)[h]->next;
+        t->a[h] = t->a[h]->next;
       }
       free(p);
     }

@@ -27,9 +27,9 @@ struct HashTable* NewHashTable(int c) {
 }
 
 int HashFunc(struct HashTable *t, int key) {
-  int ret = key % t->capacity;
+  int ret = key % t->c;
   if (ret < 0) {
-    ret += t->capacity;
+    ret += t->c;
   }
   return ret;
 }

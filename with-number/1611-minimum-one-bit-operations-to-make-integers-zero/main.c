@@ -127,6 +127,17 @@
 
 // #v2
 // recursion, bit operation
+// 把 n 的二进制表示成 AB
+// A 是 msb(most significant bit, 最高位), B 是剩下的二进制位
+// A == 1
+// A000...000 => AB => 0
+// a: (A000...000 变为 0 的次数), a 是 2 的幂
+// b: (A000...000 变为 AB 的次数) == (AB 变为 A000...000 的次数) == (B 变为 000...000 的次数)
+// c: (AB 变为 0 的次数)
+// a =  b + c
+// c = a - b
+// a == (1 << (msb + 1)) - 1
+// b == minimumOneBitOperations(n - (1 << msb)), 即去掉 n 的 msb
 int minimumOneBitOperations(int n) {
   // n == 0
   if (!n) return 0;

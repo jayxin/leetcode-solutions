@@ -1,0 +1,10 @@
+3
+GROCERY15
+ELECTRONICS_50
+DISCOUNT10
+grocery
+electronics
+invalid
+0
+1
+1

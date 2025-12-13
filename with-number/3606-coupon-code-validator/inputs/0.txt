@@ -1,0 +1,13 @@
+4
+SAVE20
+
+PHARMA5
+SAVE@20
+restaurant
+grocery
+pharmacy
+restaurant
+1
+1
+1
+1
